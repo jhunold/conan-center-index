@@ -1,0 +1,36 @@
+diff -u -r api/include/opentelemetry/logs/event_logger.h api/include/opentelemetry/logs/event_logger.h
+--- api/include/opentelemetry/logs/event_logger.h	2024-10-07 23:57:27.000000000 +0200
++++ api/include/opentelemetry/logs/event_logger.h	2025-01-15 12:37:11.542922222 +0100
+@@ -66,7 +66,7 @@
+     nostd::unique_ptr<LogRecord> log_record = delegate_logger->CreateLogRecord();
+ 
+     IgnoreTraitResult(
+-        detail::LogRecordSetterTrait<typename std::decay<ArgumentType>::type>::template Set(
++        detail::LogRecordSetterTrait<typename std::decay<ArgumentType>::type>::template Set<ArgumentType>(
+             log_record.get(), std::forward<ArgumentType>(args))...);
+ 
+     EmitEvent(event_name, std::move(log_record));
+diff -u -r api/include/opentelemetry/logs/logger.h api/include/opentelemetry/logs/logger.h
+--- api/include/opentelemetry/logs/logger.h	2024-10-07 23:57:27.000000000 +0200
++++ api/include/opentelemetry/logs/logger.h	2025-01-15 12:36:33.258856047 +0100
+@@ -73,7 +73,7 @@
+     }
+ 
+     IgnoreTraitResult(
+-        detail::LogRecordSetterTrait<typename std::decay<ArgumentType>::type>::template Set(
++        detail::LogRecordSetterTrait<typename std::decay<ArgumentType>::type>::template Set<ArgumentType>(
+             log_record.get(), std::forward<ArgumentType>(args))...);
+ 
+     EmitLogRecord(std::move(log_record));
+diff -u -r api/include/opentelemetry/logs/logger_type_traits.h api/include/opentelemetry/logs/logger_type_traits.h
+--- api/include/opentelemetry/logs/logger_type_traits.h	2024-10-07 23:57:27.000000000 +0200
++++ api/include/opentelemetry/logs/logger_type_traits.h	2025-01-15 12:33:18.556519501 +0100
+@@ -166,7 +166,7 @@
+                 * = nullptr>
+   inline static LogRecord *Set(LogRecord *log_record, ArgumentType &&arg) noexcept
+   {
+-    return LogRecordSetterTrait<common::KeyValueIterable>::template Set(
++    return LogRecordSetterTrait<common::KeyValueIterable>::template Set<common::KeyValueIterable>(
+         log_record, std::forward<ArgumentType>(arg));
+   }
+

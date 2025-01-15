@@ -1,7 +1,7 @@
 from conan import ConanFile, conan_version
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.apple import is_apple_os
-from conan.tools.files import get, copy, rmdir, replace_in_file, save
+from conan.tools.files import get, copy, rmdir, replace_in_file, save, apply_conandata_patches, export_conandata_patches
 from conan.tools.build import check_min_cppstd
 from conan.tools.scm import Version
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
@@ -110,6 +110,9 @@ class OpenTelemetryCppConan(ConanFile):
 
     def layout(self):
         cmake_layout(self, src_folder="src")
+
+    def export_sources(self):
+        export_conandata_patches(self)
 
     def _supports_new_proto_grpc_abseil(self):
         """Old versions do not support the new proto grpc abseil combo
@@ -295,6 +298,7 @@ class OpenTelemetryCppConan(ConanFile):
         deps.generate()
 
     def _patch_sources(self):
+        apply_conandata_patches(self)
         if self._needs_proto:
             protos_path = self.dependencies.build["opentelemetry-proto"].conf_info.get("user.opentelemetry-proto:proto_root").replace("\\", "/")
             protos_cmake_path = os.path.join(self.source_folder, "cmake", "opentelemetry-proto.cmake")
