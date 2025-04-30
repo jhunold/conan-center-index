@@ -55,6 +55,7 @@ class LibuvConan(ConanFile):
         tc.variables["LIBUV_BUILD_TESTS"] = False
         if Version(self.version) >= "1.45.0":
             tc.variables["LIBUV_BUILD_SHARED"] = self.options.shared
+        tc.cache_variables["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
         tc.generate()
 
     def build(self):

@@ -100,6 +100,7 @@ class ThriftConan(ConanFile):
             tc.variables["WITH_MT"] = is_msvc_static_runtime(self)
         # This policy doesn't matter for us, but avoids a warning
         tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0074"] = "NEW"
+        tc.cache_variables["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
         tc.generate()
 
         cd = CMakeDeps(self)

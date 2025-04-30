@@ -56,6 +56,7 @@ class JanssonConan(ConanFile):
         tc.variables["USE_WINDOWS_CRYPTOAPI"] = self.options.use_windows_cryptoapi
         if is_msvc(self):
             tc.variables["JANSSON_STATIC_CRT"] = is_msvc_static_runtime(self)
+        tc.cache_variables["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
         tc.generate()
 
     def build(self):

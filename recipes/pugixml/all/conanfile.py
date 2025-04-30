@@ -67,6 +67,7 @@ class PugiXmlConan(ConanFile):
             tc.variables["BUILD_TESTS"] = False
             # For msvc shared
             tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
+            tc.cache_variables["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
             tc.generate()
 
     def build(self):

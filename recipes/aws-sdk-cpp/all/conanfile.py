@@ -611,6 +611,7 @@ class AwsSdkCppConan(ConanFile):
         if is_msvc(self):
             tc.preprocessor_definitions["_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING"] = "1"
         tc.cache_variables["BUILD_SHARED_LIBS"] = self.options.shared
+        tc.cache_variables["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
         tc.generate()
 
         deps = CMakeDeps(self)
